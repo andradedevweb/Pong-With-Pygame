@@ -51,7 +51,7 @@ while GameLoop:
 			if event.key == pygame.K_x:
 				GameLoop = False
 	
-	# Moving the paddles when the use uses the arrow keys (player A) or "W/S" keys (player B)
+	# Controls
 	keys = pygame.key.get_pressed()
 	if keys[pygame.K_w]:
 		racketA.moveUp(5)
@@ -61,11 +61,10 @@ while GameLoop:
 		racketB.moveUp(5)
 	if keys[pygame.K_DOWN]:
 		racketB.moveDown(5)
-	
-	# --- Game logic should go here
+		
 	all_sprites_list.update()
 	
-	# Check if the ball is bouncing against any of the 4 walls:
+	#This check colision of the ball in the wall
 	if ball.rect.x >= 690:
 		scoreA += 1
 		ball.velocity[0] = -ball.velocity[0]
@@ -77,17 +76,13 @@ while GameLoop:
 	if ball.rect.y < 0:
 		ball.velocity[1] = -ball.velocity[1]
 	
-	# Detect collisions between the ball and the paddles
+	# Detect collisions between the ball and the rackets
 	if pygame.sprite.collide_mask(ball, racketA) or pygame.sprite.collide_mask(ball, racketB):
 		ball.bounce()
-	
-	# --- Drawing code should go here
-	# First, clear the screen to black.
+
 	screen.fill(GREEN)
-	# Draw the net
 	pygame.draw.line(screen, WHITE, [349, 0], [349, 500], 5)
 	
-	# Now let's draw all the sprites in one go. (For now we only have 2 sprites!)
 	all_sprites_list.draw(screen)
 	
 	# Display scores:
@@ -96,12 +91,9 @@ while GameLoop:
 	screen.blit(text, (250, 10))
 	text = font.render(str(scoreB), 1, WHITE)
 	screen.blit(text, (420, 10))
-	
-	# --- Go ahead and update the screen with what we've drawn.
 	pygame.display.flip()
 	
-	# --- Limit to 60 frames per second
+	#FPS limit
 	clock.tick(60)
 
-# Once we have exited the main program loop we can stop the game engine:
 pygame.quit()
